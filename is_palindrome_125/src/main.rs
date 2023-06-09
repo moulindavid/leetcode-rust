@@ -1,7 +1,7 @@
 struct Solution;
 
 impl Solution {
-    pub fn is_palindrome(s: String) -> bool {
+    pub fn is_palindrome_iter(s: String) -> bool {
         let chars: Vec<char> = s
             .chars()
             .filter(|c| c.is_ascii_alphanumeric())
@@ -9,11 +9,44 @@ impl Solution {
             .collect();
         let len = chars.len();
 
-        //Need to account for odd number, and upper bound is exclusive.
-        (0..len / 2 + len % 2)
+        (0..len / 2)
             .into_iter()
             .map(|i| chars[i])
             .eq((len / 2..len).rev().map(|i| chars[i]))
+    }
+    pub fn is_palindrome_without_iter(s: String) -> bool {
+        let mut chars: Vec<char> = Vec::new();
+        for c in s.chars() {
+            if c.is_ascii_alphanumeric() {
+                chars.push(c.to_ascii_lowercase());
+            }
+        }
+        let len = chars.len();
+
+        for i in 0..len / 2 + len % 2 {
+            if chars[i] != chars[len - i - 1] {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    pub fn is_palindrome(s: String) -> bool {
+        let s: Vec<char> = s
+            .chars()
+            .filter(|c| c.is_alphanumeric())
+            .map(|c| c.to_lowercase().next().unwrap())
+            .collect();
+
+        let len = s.len();
+
+        for i in 0..(len / 2) {
+            if s[i] != s[len - i - 1] {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
 
